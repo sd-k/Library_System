@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title pending return
+    table(width='100%')
+      tr
+        td
+          a(href='/') Home
+        td#user_name(dir='rtl') Welcome Admin
+    div(align='center')
+      h3 Pending Return
+  br
+  br
+  body
+    div(align='center')
+      form(action='/admin/pending_return_request', method='POST')
+        table(border='0')
+          each book in pending_return_list
+            tr
+                td=book
+                td
+                    input(type='checkbox',name='book')
+        br
+        input(type='submit', value='Submit', style='font-size:20px')

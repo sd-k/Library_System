@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title welcome user
+    table(width='100%')
+      tr
+        td
+          a(href='home_page') Home
+        td(dir='rtl') Welcome user
+  body
+    br
+    br
+    font(size='4')
+      table(align='center', border='0')
+        tr
+          td#book1 JavaScript Hand Book by O'Reilly
+          td &nbsp&nbsp | issued on :
+          td#book1_issued_on 25/2/2018
+        tr
+          td#book2 Operating System Concepts
+          td &nbsp&nbsp | issued on :
+          td#book2_issued_on 28/2/2018
+        tr
+          td#book3 Networking
+          td &nbsp&nbsp | issued on :
+          td#book3_issued_on 1/3/2108
+    br
+    br
+    div(align='center')
+      a(href='borrow')
+        button
+          font(size='3') Borrow
+      |     &nbsp&nbsp
+      a(href='return')
+        button
+          font(size='3') Return

@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title borrow book
+    table(width='100%')
+      tr
+        td
+          a(href='/') Home
+        td#user_name(dir='rtl') Welcome user
+    div(align='center')
+      h3 Borrow Book
+  br
+  br
+  body
+    div(align='center')
+      form(name='borrow', method='POST', action= '/borrow')
+        table(border='0')
+          tr
+            td
+                b Select :
+          each book in books
+            tr
+                td= book
+                td
+                    input(type='checkbox' name= book)
+
+        br
+        input(type='submit', value='Submit', style='font-size:20px')

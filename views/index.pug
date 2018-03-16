@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    title welcome user
+    table(width='100%')
+      tr
+        td
+          a(href='/') Home
+        td(dir='rtl') Welcome user
+  body
+    br
+    br
+    font(size='4')
+      table(align='center', border='0')
+            tr
+                td=details.book1
+                td &nbsp&nbsp | issued on :
+                td=details.b1_issued_on
+            tr
+                td= details.book2
+                td &nbsp&nbsp | issued on :
+                td=details.b2_issued_on
+            tr
+                td=details.book3
+                td &nbsp&nbsp | issued on :
+                td=details.b3_issued_on
+    br
+    br
+    div(align='center')
+      button(onclick="window.location.href='/borrow'")
+        font(size='3') Borrow
+      |         &nbsp&nbsp
+      button(onclick="window.location.href='/return'")
+        font(size='3') Return

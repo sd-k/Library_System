@@ -1,0 +1,26 @@
+-var books=[borrowed_books.book1,borrowed_books.book2,borrowed_books.book3]
+doctype html
+html
+  head
+    title return book
+    table(width='100%')
+      tr
+        td
+          a(href='/') Home
+        td(dir='rtl') Welcome Sougata Das
+    div(align='center')
+      h2 Return Book
+  body
+    br
+    form(name='return', action='/return', method='POST')
+      font(size='4')
+        table(align='center', border='0')
+            each book in books
+                tr
+                    td=book
+                    td
+                        input(type='checkbox', name=book)
+      br
+      br
+      div(align='center')
+        input#submit(type='submit', value='Submit', style='font-size:20px')

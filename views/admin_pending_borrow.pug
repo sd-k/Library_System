@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title pending borrow
+    table(width='100%')
+      tr
+        td
+          a(href='/') Home
+        td#user_name(dir='rtl') Welcome Admin
+    div(align='center')
+      h3 Pending Borrow
+  br
+  br
+  body
+    div(align='center')
+      form(action='/admin/pending_borrow_request', method='POST')
+        table(border='0')
+            each book in pending_borrow_list
+                tr
+                    td= book
+                    td
+                        input(type='checkbox', name=book)
+        br
+        br
+        input(type='submit', value='Submit', style='font-size:20px')

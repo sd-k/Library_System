@@ -3,7 +3,7 @@ var router = express.Router();
 var query = require("../db/query.js");
 
 /* GET home page. */
-router.get("/", async function(req, res, next) {
+router.get("/", async function(req, res) {
 	var details = await query.getBorrowedBooksDetails();
 	res.render("index", { details: details });
 	res.end();
@@ -58,7 +58,7 @@ router.get("/admin/pending_return_request", async function(req, res) {
 	});
 	res.end();
 });
-router.post("/admin/pending_return_request", async function(req, res) {
+router.post("/admin/pending_return_request", function(req, res) {
 	res.send("Database updated...");
 	res.end();
 });

@@ -15,11 +15,11 @@ html
     form(name='return', action='/return', method='POST')
       font(size='4')
         table(align='center', border='0')
-            each book in books
+            each book in borrowed_books
                 tr
-                    td=book
+                    td=book.book_name
                     td
-                        input(type='checkbox', name=book)
+                        input(type='checkbox', name=book.book_id)
       br
       br
       div(align='center')

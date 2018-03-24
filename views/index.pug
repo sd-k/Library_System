@@ -12,18 +12,11 @@ html
     br
     font(size='4')
       table(align='center', border='0')
+        each book in books
             tr
-                td=details.book1
-                td &nbsp&nbsp | issued on :
-                td=details.b1_issued_on
-            tr
-                td= details.book2
-                td &nbsp&nbsp | issued on :
-                td=details.b2_issued_on
-            tr
-                td=details.book3
-                td &nbsp&nbsp | issued on :
-                td=details.b3_issued_on
+                td=book.book_name
+                td &nbsp&nbsp | issued on
+                td=book.issued_on
     br
     br
     div(align='center')

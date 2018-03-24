@@ -1,5 +1,5 @@
 const pg = require("pg");
-const connectionString = "postgresql://localhost/library";
+const connectionString = "postgresql://localhost/library_system";
 
 var db = new pg.Pool({
 	connectionString: connectionString

@@ -1,0 +1,62 @@
+doctype html
+html
+  head
+    title welcome user
+    table(width='100%')
+        tr
+            td
+                a(href='/member') Home
+            td(dir='rtl') Welcome #{member_name}
+        tr
+            td(colspan='2',dir='rtl')
+                a(href='/home') Logout
+  body
+    br
+    br
+    div(align='center')
+        label(style='font-size:20px')
+            b   Borrowed books details
+            br
+            br
+        table
+            if borrowed_books.length==0
+                tr
+                    td No books borrowed
+            each book in borrowed_books
+                tr(style='font-size:19px')
+                    td=book.book_name
+                    td &nbsp&nbsp |
+                    td &nbsp&nbsp issued on
+                    td=book.issued_on
+    br
+    br
+    div(align='center')
+      if borrowed_books.length<3
+        button(onclick="window.location.href='/books'")
+            font(size='3') Borrow
+      |         &nbsp&nbsp
+      if borrowed_books.length>0
+        button(onclick="window.location.href='/return'")
+            font(size='3') Return
+    br
+    br
+    hr
+    br
+    br
+    div(align='center')
+        label(style='font-size:20px')
+            b Pending borrow request status :
+            br
+            br
+        table
+            if sent_borrow_request.length==0
+                tr
+                    td No request sent...
+            else
+                tr
+                    th Books
+                    th Requested on
+                each book in sent_borrow_request
+                    tr
+                        td=book.book_name
+                        td(align='center')=book.requested_on

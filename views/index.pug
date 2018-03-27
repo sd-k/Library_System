@@ -1,27 +1,17 @@
 doctype html
 html
   head
-    title welcome user
-    table(width='100%')
-      tr
-        td
-          a(href='/') Home
-        td(dir='rtl') Welcome user
+    title home
   body
     br
     br
-    font(size='4')
-      table(align='center', border='0')
-        each book in books
-            tr
-                td=book.book_name
-                td &nbsp&nbsp | issued on
-                td=book.issued_on
-    br
     br
     div(align='center')
-      button(onclick="window.location.href='/borrow'")
-        font(size='3') Borrow
-      |         &nbsp&nbsp
-      button(onclick="window.location.href='/return'")
-        font(size='3') Return
+        form(action='/member',method='GET')
+            label Select a member :
+            br
+            br
+            select(name='member',style='font-size:15px')
+                each member in members
+                    option(value=member.member_id)=member.member_name
+            button(type='submit',style='font-size:15px') Ok

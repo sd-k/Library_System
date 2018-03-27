@@ -1,28 +1,46 @@
+-var flag1=false;
+-var flag2=false;
 doctype html
 html
   head
     title borrow book
     table(width='100%')
-      tr
-        td
-          a(href='/') Home
-        td#user_name(dir='rtl') Welcome user
+        tr
+            td
+                a(href='/member') Home
+            td#user_name(dir='rtl') Welcome #{member_name}
+        tr
+            td(colspan='2',dir='rtl')
+                a(href='/home') Logout
+
+
     div(align='center')
       h3 Borrow Book
   br
   br
   body
     div(align='center')
-      form(name='borrow', method='POST', action= '/borrow')
+      form(name='borrow', method='POST', action= '/books')
         table(border='0')
           tr
             td
                 b Select :
-          each book in books
+          each available_book in available_books
             tr
-                td= book.book_name
-                td
-                    input(type='checkbox' name=book.book_id)
+                td=available_book.book_name
+                each borrow_book in borrowed_books
+                    if borrow_book.book_id==available_book.book_id
+                        td(align='center') Borrowed
+                        -flag1=true
+                each requested_book in sent_borrow_request
+                    if requested_book.book_id==available_book.book_id
+                        td(align='center') Already requested
+                        -flag2=true
+                if flag1==false && flag2==false
+                    td(align='center')
+                        input(type='checkbox', name=available_book.book_id)
+                -flag1=false
+                -flag2=false
 
         br
-        input(type='submit', value='Submit', style='font-size:20px')
+        button(type='submit', style='font-size:15px') Submit

@@ -9,6 +9,15 @@ module.exports = {
 		if (mm < 10) mm = "0" + mm;
 		return dd + "/" + mm + "/" + yyyy;
 	},
+	getMembersList: async function() {
+		var members;
+		try {
+			members = await db.query("select * from members");
+		} catch (e) {
+			console.log(e);
+		}
+		return members.rows;
+	},
 	getAvailableBooks: async function() {
 		let books;
 		try {
@@ -21,10 +30,13 @@ module.exports = {
 	getBorrowedBooksDetails: async function(member_id) {
 		var details;
 		try {
-			details = await db.query(
-				"select b.book_name,bb.issued_on,b.book_id from books b join borrowed_books bb using(book_id) where bb.member_id = $1",
-				[member_id]
-			);
+			if (!member_id) {
+				details = await db.query("select * from borrowed_books");
+			} else
+				details = await db.query(
+					"select b.book_name,bb.issued_on,b.book_id from books b join borrowed_books bb using(book_id) where bb.member_id = $1",
+					[member_id]
+				);
 		} catch (err) {
 			console.log(err);
 		}
@@ -40,12 +52,18 @@ module.exports = {
 			]);
 		});
 	},
-	getPendingBorrowRequests: async function() {
+	getPendingBorrowRequests: async function(member_id) {
 		var details;
 		try {
-			details = await db.query(
-				"select B.book_name,M.member_name,M.member_id,B.book_id from books B,members M,borrow_request BR where B.book_id = BR.book_id and M.member_id = BR.member_id"
-			);
+			if (member_id) {
+				details = await db.query(
+					"select * from books join borrow_request using(book_id) where member_id=$1",
+					[member_id]
+				);
+			} else
+				details = await db.query(
+					"select B.book_name,M.member_name,M.member_id,B.book_id,BR.requested_on from books B,members M,borrow_request BR where B.book_id = BR.book_id and M.member_id = BR.member_id"
+				);
 		} catch (err) {
 			console.log(err);
 		}
@@ -73,12 +91,18 @@ module.exports = {
 			]);
 		});
 	},
-	getPendingReturnRequests: async function() {
+	getPendingReturnRequests: async function(member_id) {
 		var details;
 		try {
-			details = await db.query(
-				"select B.book_id,B.book_name,M.member_id,M.member_name from books B,members M,return_request RR where B.book_id=RR.book_id and M.member_id=RR.member_id"
-			);
+			if (member_id) {
+				details = await db.query(
+					"select * from return_request where member_id=$1",
+					[member_id]
+				);
+			} else
+				details = await db.query(
+					"select B.book_id,B.book_name,M.member_id,M.member_name,RR.requested_on from books B,members M,return_request RR where B.book_id=RR.book_id and M.member_id=RR.member_id"
+				);
 		} catch (e) {
 			console.log(e);
 		}
@@ -93,5 +117,17 @@ module.exports = {
 				book_ids[i]
 			]);
 		});
+	},
+	getMemberName: async function(member_id) {
+		var member_name;
+		try {
+			member_name = await db.query(
+				"select member_name from members where member_id=$1",
+				[member_id]
+			);
+		} catch (e) {
+			console.log(e);
+		}
+		return member_name.rows[0].member_name;
 	}
 };

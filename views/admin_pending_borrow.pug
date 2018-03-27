@@ -5,7 +5,7 @@ html
     table(width='100%')
       tr
         td
-          a(href='/') Home
+          a(href='/admin') Home
         td#user_name(dir='rtl') Welcome Admin
     div(align='center')
       h3 Pending Borrow
@@ -13,20 +13,25 @@ html
   br
   body
     div(align='center')
-      form(action='/admin/pending_borrow_request', method='POST')
-        table(border='0' id='borrow_request_table')
-            tr
-                th Members name
-                th Members ID
-                th Requested Books
-                th Approve
-                each row in pending_borrow_list
+        if pending_borrow_list.length>0
+            form(action='/admin/borrow', method='POST')
+                table(cellpadding='5')
                     tr
-                        td= row.member_name
-                        td(align='center')= row.member_id
-                        td= row.book_name
-                        td(align='center')
-                            input(type='checkbox' name=[row.book_id,row.member_id])
-        br
-        br
-        input(type='submit', value='Submit', style='font-size:20px')
+                        th Members name
+                        th Members ID
+                        th Requested Books
+                        th Requested on
+                        th Approve
+                    each row in pending_borrow_list
+                        tr(align='center')
+                            td(align='left')= row.member_name
+                            td= row.member_id
+                            td= row.book_name
+                            td= row.requested_on
+                            td
+                                input(type='checkbox' name=[row.book_id,row.member_id])
+                br
+                br
+                button(type='submit', style='font-size:15px') Submit
+        else
+            p(style='font-size:20px') No borrow request received.

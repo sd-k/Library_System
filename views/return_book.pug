@@ -1,26 +1,37 @@
--var books=[borrowed_books.book1,borrowed_books.book2,borrowed_books.book3]
+-var flag=false;
 doctype html
 html
   head
     title return book
     table(width='100%')
-      tr
-        td
-          a(href='/') Home
-        td(dir='rtl') Welcome Sougata Das
+        tr
+            td
+                a(href='/member') Home
+            td(dir='rtl') Welcome #{member_name}
+        tr
+            td(colspan='2',dir='rtl')
+                a(href='/home') Logout
+
     div(align='center')
       h2 Return Book
   body
     br
     form(name='return', action='/return', method='POST')
-      font(size='4')
         table(align='center', border='0')
-            each book in borrowed_books
-                tr
-                    td=book.book_name
-                    td
-                        input(type='checkbox', name=book.book_id)
-      br
-      br
-      div(align='center')
-        input#submit(type='submit', value='Submit', style='font-size:20px')
+            each borrow_book in borrowed_books
+                tr(style='font-size:19px')
+                    td=borrow_book.book_name
+                    td &nbsp&nbsp
+                    each requested_book in sent_return_request
+                        if(requested_book.book_id==borrow_book.book_id)
+                            td Return request send on
+                            td=requested_book.requested_on
+                            -flag=true
+                    if flag==false
+                        td
+                            input(type='checkbox', name=borrow_book.book_id)
+                    -flag=false
+        br
+        br
+        div(align='center')
+            button(type='submit', style='font-size:15px') Submit

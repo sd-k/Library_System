@@ -31,7 +31,9 @@ module.exports = {
 		var details;
 		try {
 			if (!member_id) {
-				details = await db.query("select * from borrowed_books");
+				details = await db.query(
+					"select M.member_name,M.member_id,BB.book_id,BB.issued_on,BB.member_id from members M join borrowed_books BB using(member_id) where M.member_id=BB.member_id"
+				);
 			} else
 				details = await db.query(
 					"select b.book_name,bb.issued_on,b.book_id from books b join borrowed_books bb using(book_id) where bb.member_id = $1",
@@ -69,19 +71,39 @@ module.exports = {
 		}
 		return details.rows;
 	},
-	postIssuedBooks: async function(book_ids, member_ids, issue_date) {
-		book_ids.forEach(function(book, i) {
-			db.query("insert into borrowed_books values($1,$2,$3)", [
-				member_ids[i],
-				book_ids[i],
-				issue_date
-			]);
-			db.query("delete from borrow_request where book_id = $1", [
-				book_ids[i]
-			]);
-		});
+	postIssuedBooks: function(book_ids, member_ids, issue_date) {
+		try {
+			book_ids.forEach(function(book, i) {
+				db.query("insert into borrowed_books values($1,$2,$3)", [
+					member_ids[i],
+					book_ids[i],
+					issue_date
+				]);
+				db.query(
+					"delete from borrow_request where member_id=$1 and book_id=$2",
+					[member_ids[i], book_ids[i]]
+				);
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	},
 
+	// deleteBorrowRequest: function() {
+	// 	try {
+	// 		db.query(
+	// 			"delete from borrow_request BR where exists (select * from borrowed_books BB where BR.member_id = BB.member_id and BR.book_id = BB.book_id);"
+	// 		);
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 	}
+	// },
+	getAllBooksDetails: async function() {
+		// var details;
+		// try{
+		// 	var details=await db.query("select bb.boo")
+		// }
+	},
 	sendReturnRequest: function(member_id, return_list, req_date) {
 		return_list.forEach(function(book_id) {
 			db.query("insert into return_request values ($1,$2,$3)", [
@@ -129,5 +151,35 @@ module.exports = {
 			console.log(e);
 		}
 		return member_name.rows[0].member_name;
+	},
+	maxBorrowBooks: async function(member_id) {
+		var requested, borrowed;
+		try {
+			requested = await db.query(
+				"select book_id from borrow_request where member_id=$1",
+				[member_id]
+			);
+			borrowed = await db.query(
+				"select book_id from borrowed_books where member_id=$1",
+				[member_id]
+			);
+		} catch (e) {
+			console.log(e);
+		}
+		return 3 - (requested.rows.length + borrowed.rows.length);
+	},
+	insertNewBooks: function(details) {
+		try {
+			db.query("insert into books (book_name) values($1)", [details]);
+		} catch (e) {
+			console.log(e);
+		}
+	},
+	deleteBook: function(book_id) {
+		try {
+			db.query("delete from books where book_id =$1", [book_id]);
+		} catch (e) {
+			console.log(e);
+		}
 	}
 };

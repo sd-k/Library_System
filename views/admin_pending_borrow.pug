@@ -1,3 +1,4 @@
+-var flag = false;
 doctype html
 html
   head
@@ -28,10 +29,48 @@ html
                             td= row.member_id
                             td= row.book_name
                             td= row.requested_on
-                            td
-                                input(type='checkbox' name=[row.book_id,row.member_id])
+                            each book in issued_books
+                                if book.book_id==row.book_id
+                                    td not available
+                                    -flag = true
+                            if flag==false
+                                td
+                                    input(type='checkbox',value=row.book_id,onclick='findDuplicate()' ,name=[row.book_id,row.member_id])
+                            -flag=false        
                 br
                 br
-                button(type='submit', style='font-size:15px') Submit
+                input(type='button',style='font-size:20px',value="Select all", onclick='selectAll()')
+                input(type='submit',style='font-size:20px', value="Submit")
         else
             p(style='font-size:20px') No borrow request received.
+
+
+
+
+script.
+    var findDuplicate = function(){
+        var book_ids = [];
+        var input_element = document.getElementsByTagName('input')
+        var value;
+        for(var i=0;i<input_element.length;i++){
+            if(input_element[i].type=='checkbox' && input_element[i].checked==true){
+            value = input_element[i].value;
+            if(book_ids.indexOf(value)!=-1){
+                alert("Can't select same books twice")
+                input_element[i].checked=false
+            }
+            else
+                book_ids.push(value)
+            }
+        }
+    }
+
+    var selectAll = function(){
+    var input_element = document.getElementsByTagName('input')
+        for(var i=0;i<input_element.length;i++){
+            if(input_element[i].type=='checkbox'){
+            input_element[i].checked=true;
+            findDuplicate();
+            }
+        }
+    }

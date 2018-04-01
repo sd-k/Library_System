@@ -1,0 +1,48 @@
+doctype html
+html
+    head
+        title update books
+        table(width='100%')
+            tr
+                td
+                    a(href='/admin') Home
+                td(dir='rtl') Welcome Admin
+
+    body
+        div(align='center')
+          h3 Insert books details
+          br
+          br
+        div(align='center')
+            form(action='/admin/updates/books',method='POST')
+                table
+                    tr
+                        td Name :
+                        td
+                            input#book_name(type='text',value='',name='book_name',size='50',style='font-size:15px')
+                    tr
+                        td Author :
+                        td
+                            input#author_name(type='text',value='',name='author_name',size='50',style='font-size:15px')
+
+                input#reset(type='button',value='Reset',style='font-size:20px',onclick='resetAll()')
+                input#submit(type='submit',value='Submit',style='font-size:20px',onclick='checkAll()')
+
+    script.
+        var book_name = document.getElementById('book_name')
+        var author_name = document.getElementById('author_name')
+        var submit_button = document.getElementById('submit')
+
+        var resetAll = function(){
+            book_name.value=''
+            author_name.value=''
+        }
+        var checkAll = function(){
+            if(book_name.value=='' || author_name.value==''){
+                alert('Fields cannot be empty')
+                submit_button.disabled=true
+                setTimeout(function(){submit_button.disabled=false},100)
+            }
+            else
+                alert("One book inserted")
+        }

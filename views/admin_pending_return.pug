@@ -32,6 +32,18 @@ html
                                 input(type='checkbox' name=[row.book_id,row.member_id])
                 br
                 br
-                button(type='submit', style='font-size:15px') Submit
+                input(type='button',style='font-size:20px',value="Select all", onclick='selectAll()')
+                input(type='submit',style='font-size:20px', value="Submit")
         else
             p(style='font-size:20px') No return request received.
+
+
+        script.
+            var selectAll = function(){
+            var input_element = document.getElementsByTagName('input')
+                for(var i=0;i<input_element.length;i++){
+                    if(input_element[i].type=='checkbox'){
+                    input_element[i].checked=true;
+                    }
+                }
+            }

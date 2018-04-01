@@ -1,3 +1,4 @@
+-var flag = false
 doctype html
 html
   head
@@ -31,7 +32,7 @@ html
     br
     br
     div(align='center')
-      if borrowed_books.length<3
+      if (borrowed_books.length+sent_borrow_request.length)<3
         button(onclick="window.location.href='/books'")
             font(size='3') Borrow
       |         &nbsp&nbsp
@@ -48,7 +49,7 @@ html
             b Pending borrow request status :
             br
             br
-        table
+        table(border='0')
             if sent_borrow_request.length==0
                 tr
                     td No request sent...
@@ -60,3 +61,4 @@ html
                     tr
                         td=book.book_name
                         td(align='center')=book.requested_on
+                -flag=true

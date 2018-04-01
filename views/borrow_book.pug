@@ -18,7 +18,7 @@ html
       h3 Borrow Book
   br
   br
-  body
+  body(onload=`alert('You can select '+${max_borrow}+' book(s)')`)
     div(align='center')
       form(name='borrow', method='POST', action= '/books')
         table(border='0')
@@ -30,17 +30,37 @@ html
                 td=available_book.book_name
                 each borrow_book in borrowed_books
                     if borrow_book.book_id==available_book.book_id
-                        td(align='center') Borrowed
+                        td(align='center') not available
                         -flag1=true
                 each requested_book in sent_borrow_request
                     if requested_book.book_id==available_book.book_id
-                        td(align='center') Already requested
+                        td(align='center') request received
                         -flag2=true
                 if flag1==false && flag2==false
                     td(align='center')
-                        input(type='checkbox', name=available_book.book_id)
+                        input(type='checkbox',class='checkbox',onclick=`checkStatus(${max_borrow})`,name=available_book.book_id)
                 -flag1=false
                 -flag2=false
 
         br
-        button(type='submit', style='font-size:15px') Submit
+        input#submit(type='submit',style='font-size:15px', value="Submit")
+
+
+script.
+    var checkStatus = function(max_borrow){
+        var checkbox = document.getElementsByClassName('checkbox')
+        var submit_button = document.getElementById('submit')
+        var count=0
+        for(var i=0;i<checkbox.length;i++){
+            if(checkbox[i].checked==true)
+                count++
+            if(count>max_borrow){
+                alert("Can't select more than "+max_borrow+" book(s)")
+                submit_button.disabled=true;
+                break;
+            }
+            if(count<=max_borrow){
+                submit_button.disabled=false
+            }
+        }
+    }

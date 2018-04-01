@@ -1,0 +1,58 @@
+
+doctype html
+html
+  head
+    title books
+    table(width='100%')
+      tr
+        td
+          a(href='/admin') Home
+        td#user_name(dir='rtl') Welcome Admin
+
+  body
+    div(align='center')
+        br
+        br
+        form(action='/admin/updates/books/book',method='POST')
+            lable Select a book :
+            br
+            select#select(name='delete_book',onChange=`checkStatus(${JSON.stringify(borrowed_books)})`,style='font-size:14px')
+                option(value='default',style='font-size:20px') ----------Select----------
+                each available_book in available_books
+                    option(value=available_book.book_id,name=available_book.book_id)=available_book.book_name
+            input#delete_button(type='submit',value="Delete",onclick='checkOptionValidity()',style='font-size:20px')
+
+
+script.
+    var checkStatus=function(borrowed_books){
+        var select = document.getElementById('select')
+        var selected_value = select.options[select.selectedIndex]
+
+        for(var i=0;i<borrowed_books.length;i++){
+            if(selected_value.value == borrowed_books[i].book_id){
+                alert('Book is borrowed')
+                selected_value.disabled=true;
+                break
+            }
+        }
+    }
+
+    var checkOptionValidity = function(){
+        var delete_button = document.getElementById('delete_button')
+        var select = document.getElementById('select')
+        var selected_value = select.options[select.selectedIndex].value
+
+        if(selected_value=='default'){
+            alert('Choose a valid book')
+            delete_button.disabled=true
+            setTimeout(function(){delete_button.disabled=false},100)
+        }
+        else{
+            var response = confirm("Confirm deletion ?")
+            if(response==false){
+                delete_button.disabled=true
+                setTimeout(function(){delete_button.disabled=false},100)
+            }
+            else alert("One book successfully deleted")
+        }
+    }

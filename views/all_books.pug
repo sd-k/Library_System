@@ -1,0 +1,34 @@
+-var flag = false
+doctype html
+html
+  head
+    title books
+    table(width='100%')
+      tr
+        td
+          a(href='/admin') Home
+        td#user_name(dir='rtl') Welcome Admin
+    div(align='center')
+      h3 Books status
+  br
+  br
+  body
+    div(align='center')
+        table(cellpadding='5')
+            tr
+                th Books
+                th Borrowed by
+                th Issue date
+            each book in available_books
+                tr
+                    td=book.book_name
+                    each borrow_book in borrowed_books
+                        if book.book_id==borrow_book.book_id
+                            td
+                                a (##{borrow_book.member_id})   #{borrow_book.member_name}
+                            td=borrow_book.issued_on
+                            -flag=true
+                    if flag == false
+                        td(align='center') ---
+                        td(align='center') ---
+                    -flag = false

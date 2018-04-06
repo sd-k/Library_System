@@ -89,21 +89,6 @@ module.exports = {
 		}
 	},
 
-	// deleteBorrowRequest: function() {
-	// 	try {
-	// 		db.query(
-	// 			"delete from borrow_request BR where exists (select * from borrowed_books BB where BR.member_id = BB.member_id and BR.book_id = BB.book_id);"
-	// 		);
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// },
-	getAllBooksDetails: async function() {
-		// var details;
-		// try{
-		// 	var details=await db.query("select bb.boo")
-		// }
-	},
 	sendReturnRequest: function(member_id, return_list, req_date) {
 		return_list.forEach(function(book_id) {
 			db.query("insert into return_request values ($1,$2,$3)", [
@@ -140,17 +125,17 @@ module.exports = {
 			]);
 		});
 	},
-	getMemberName: async function(member_id) {
-		var member_name;
+	getMemberNameAndId: async function(mobile_no) {
+		var member_name_and_id;
 		try {
-			member_name = await db.query(
-				"select member_name from members where member_id=$1",
-				[member_id]
+			member_name_and_id = await db.query(
+				"select member_name,member_id from members where mobile_no=$1",
+				[mobile_no]
 			);
 		} catch (e) {
 			console.log(e);
 		}
-		return member_name.rows[0].member_name;
+		return member_name_and_id.rows[0];
 	},
 	maxBorrowBooks: async function(member_id) {
 		var requested, borrowed;
@@ -168,16 +153,30 @@ module.exports = {
 		}
 		return 3 - (requested.rows.length + borrowed.rows.length);
 	},
-	insertNewBooks: function(details) {
+	insertNewBooks: function(new_book_id, details) {
 		try {
-			db.query("insert into books (book_name) values($1)", [details]);
+			db.query("insert into books (book_id,book_name) values($1,$2)", [
+				new_book_id,
+				details
+			]);
 		} catch (e) {
 			console.log(e);
 		}
 	},
 	deleteBook: function(book_id) {
 		try {
-			db.query("delete from books where book_id =$1", [book_id]);
+			db.query("delete from books where book_id=$1", [book_id]);
+		} catch (e) {
+			console.log(e);
+		}
+	},
+	createNewMember: function(details) {
+		console.log(details);
+		try {
+			db.query(
+				"insert into members(member_name,mobile_no,password) values($1,$2,$3)",
+				[details[0], details[1], details[2]]
+			);
 		} catch (e) {
 			console.log(e);
 		}

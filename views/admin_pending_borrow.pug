@@ -4,10 +4,14 @@ html
   head
     title pending borrow
     table(width='100%')
-      tr
-        td
-          a(href='/admin') Home
-        td#user_name(dir='rtl') Welcome Admin
+        tr
+            td
+              a(href='/admin') Home
+            td(dir='rtl') Welcome Admin
+        tr
+            td(colspan='2',dir='rtl')
+                a(href='/logout') Logout
+
     div(align='center')
       h3 Pending Borrow
   br
@@ -36,7 +40,7 @@ html
                             if flag==false
                                 td
                                     input(type='checkbox',value=row.book_id,onclick='findDuplicate()' ,name=[row.book_id,row.member_id])
-                            -flag=false        
+                            -flag=false
                 br
                 br
                 input(type='button',style='font-size:20px',value="Select all", onclick='selectAll()')

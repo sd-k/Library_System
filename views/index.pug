@@ -8,10 +8,46 @@ html
     br
     div(align='center')
         form(action='/home',method='POST')
-            label Select a member :
+            label(style='font-size:20px') Login here :
             br
             br
-            select(name='member',style='font-size:15px')
-                each member in members
-                    option(value=member.member_id)=member.member_name
-            button(type='submit',style='font-size:15px') Ok
+            br
+            input#mobile_no(type='text', name='mobile_no',value='', placeholder='Mobile Number',style='font-size:20px',size='30')
+            br
+            br
+            input#password(type='password',name='password',value='', placeholder='Password',style='font-size:20px',size='30')
+            br
+            br
+            br
+            input(type='button',value='Reset',onClick='clearAll()',style='font-size:20px')
+            a &nbsp&nbsp
+            input#login_button(type='submit',value='Login',onClick=`checkMemberValidity(${JSON.stringify(members)})`,style='font-size:20px')
+            br
+            br
+            br
+    div(align='center')
+            a New user Sign Up &nbsp
+            a(href='/signup') here
+script.
+    var clearAll = function(){
+        document.getElementById('mobile_no').value = ''
+        document.getElementById('password').value = ''
+    }
+
+    var checkMemberValidity = function(members){
+        var mobile_no = Number(document.getElementById('mobile_no').value)
+        var password = document.getElementById('password').value
+        var login_button = document.getElementById('login_button')
+        var flag = 0;
+
+        for(var i=0;i<members.length;i++){
+            if(mobile_no == members[i].mobile_no && password == members[i].password)
+                flag++
+        }
+
+        if(flag == 0){
+            alert("Enter valid details !")
+            login_button.disabled=true
+            setTimeout(function(){login_button.disabled=false},100)
+            }
+    }

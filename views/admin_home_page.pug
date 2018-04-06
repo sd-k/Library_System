@@ -3,14 +3,21 @@ html
   head
     title admin home page
     table(width='100%')
-      tr
-        td
-            a(href='/admin') Home
-        td#user_name(dir='rtl') Welcome Admin
-    div(align='center')
-      h3 Admin
+        tr
+            td
+                a(href='/admin') Home
+            td(dir='rtl') Welcome Admin
+        tr
+            td(colspan='2',dir='rtl')
+                a(href='/logout') Logout
+
   body
+    br
+    br
     table(align='center', cellpadding='10')
+        tr
+            td
+                b Select options :
         tr
             td
                 a(href='admin/borrow') Pending Borrow Request

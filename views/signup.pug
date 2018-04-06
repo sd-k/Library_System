@@ -1,0 +1,105 @@
+doctype html
+html
+  head
+    title home
+  body
+    br
+    br
+    br
+    div(align='center')
+        form(action='/signup',method='POST')
+            label(style='font-size:20px') Enter details here :
+            br
+            br
+            br
+            table
+                tr
+                    td
+                        input#fname(type='text', name='fname',value='', placeholder='First Name',style='font-size:20px',size='30')
+                tr
+                    td
+                        input#lname(type='text', name='lname',value='', placeholder='Last Name',style='font-size:20px',size='30')
+                tr
+                    td
+                        input#mobile_no(type='text', name='mobile_no',value='', placeholder='Mobile Number',style='font-size:20px',size='30')
+                tr
+                    td
+                        input#password(type='password',name='password',value='', placeholder='Password',style='font-size:20px',size='30')
+                tr
+                    td
+                        input#confirm(type='password',name='confirm_password',value='', placeholder='Confirm password',style='font-size:20px',size='30')
+            br
+            br
+            br
+            input(type='button',value='Reset',onClick='clearAll()',style='font-size:20px')
+            a &nbsp&nbsp
+            input#signup_button(type='submit',value='Sign Up',onClick=`checkfieldsValidity(${JSON.stringify(members)})`,style='font-size:20px')
+            br
+            br
+            br
+        a Or Login &nbsp
+            a(href='/home') here
+
+script.
+    var clearAll = function(){
+        document.getElementById('fname').value = ''
+        document.getElementById('lname').value = ''
+        document.getElementById('mobile_no').value = ''
+        document.getElementById('password').value = ''
+        document.getElementById('confirm').value = ''
+    }
+
+    var checkfieldsValidity = function(members){
+        var fname = document.getElementById('fname').value
+        var lname = document.getElementById('lname').value
+        var mobile_no = document.getElementById('mobile_no').value
+        var password = document.getElementById('password').value
+        var confirm_password = document.getElementById('confirm').value
+        var signup_button = document.getElementById('signup_button')
+        var flag = 0;
+
+        if(password=='' || fname=='' || lname=='' || mobile_no==''){
+            alert('No fields can be blank !')
+            signup_button.disabled=true
+            setTimeout(function(){signup_button.disabled=false},100)
+            return
+        }
+            if(password.length<6){
+                alert("Password should be greater than or equal to 6 !")
+                signup_button.disabled=true
+                setTimeout(function(){signup_button.disabled=false},100)
+                return
+            }
+            if(password.length>10){
+                alert("Password should be less than than or equal to 10 !")
+                signup_button.disabled=true
+                setTimeout(function(){signup_button.disabled=false},100)
+                return
+            }
+            if(mobile_no.length<10 && mobile_no.length>10){
+                alert("Enter a valid mobile number !")
+                signup_button.disabled=true
+                setTimeout(function(){signup_button.disabled=false},100)
+                return
+            }
+            if(password != confirm_password){
+                alert("Password do not match !")
+                signup_button.disabled=true
+                setTimeout(function(){signup_button.disabled=false},100)
+                return
+            }
+
+        for(var i=0;i<members.length;i++){
+            if(Number(mobile_no) == members[i].mobile_no){
+            flag++
+            break
+            }
+        }
+
+        if(flag != 0){
+            alert("Member already exists !")
+            signup_button.disabled=true
+            setTimeout(function(){signup_button.disabled=false},100)
+            return
+        }
+    }

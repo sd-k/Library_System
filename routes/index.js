@@ -37,7 +37,7 @@ router.post("/signup", function(req, res) {
 		details[0] = req.body.fname.concat(" ", req.body.lname);
 		details[1] = Number(req.body.mobile_no);
 		details[2] = req.body.confirm_password;
-		//query.createNewMember(details);
+		query.createNewMember(details);
 		res.send(
 			"<div align='center'><h2>Successfully Signed up.</h2><br><br> Go to Login page <a href='/home'>here</a><br><br>Or Sign up page <a href='/signup'>here</a></div>"
 		);

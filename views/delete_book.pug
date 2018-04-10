@@ -30,12 +30,16 @@ script.
     var checkStatus=function(borrowed_books){
         var select = document.getElementById('select')
         var selected_value = select.options[select.selectedIndex]
-
+        var delete_button = document.getElementById('delete_button')
+        var flag = 0
+        delete_button.disabled=false
+        
         for(var i=0;i<borrowed_books.length;i++){
             if(selected_value.value == borrowed_books[i].book_id){
                 alert('Book is borrowed')
                 selected_value.disabled=true;
-                break
+                delete_button.disabled = true;
+                return
             }
         }
     }
